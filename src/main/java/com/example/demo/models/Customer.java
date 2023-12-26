@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.Strategy.Strategy;
@@ -8,13 +9,13 @@ public class Customer  {
   private String username;
   private double balance;
   List<Order> orders;
-  private Strategy preferredStrategy;
+  private String preferredStrategy; // TPU
   
 
-  public Customer(String username, double balance, List<Order> orders, Strategy preferredStrategy) {
+  public Customer(String username, double balance, String preferredStrategy) {
     this.username = username;
     this.balance = balance;
-    this.orders = orders;
+    orders = new ArrayList<>();
     this.preferredStrategy = preferredStrategy;
   }
 
@@ -30,7 +31,7 @@ public class Customer  {
     return orders;
   }
 
-  public Strategy getPreferredStrategy() {
+  public String getPreferredStrategy() {
     return preferredStrategy;
   }
 
@@ -46,7 +47,7 @@ public class Customer  {
     this.orders = orders;
   }
 
-  public void setPreferredStrategy(Strategy preferredStrategy) {
+  public void setPreferredStrategy(String preferredStrategy) {
     this.preferredStrategy = preferredStrategy;
   }
 
