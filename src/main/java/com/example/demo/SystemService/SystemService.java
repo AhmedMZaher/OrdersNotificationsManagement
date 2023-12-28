@@ -104,7 +104,7 @@ public class SystemService {
     return order;
   }
   public Order createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
-    Order compoundOrder = createOrder(selectedProducts, "CompoundOrder", username);
+    Order compoundOrder = createOrder(selectedProducts, "CompoundOrder", username); // TBD
     Customer customer = isUserExist(username);
    
     compoundOrder.setCustomer(customer);
