@@ -1,5 +1,6 @@
 package com.example.demo.SystemService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Factory.OrderFactory;
 import com.example.demo.models.CompoundOrder;
 import com.example.demo.models.Customer;
+import com.example.demo.models.NotificationTemplate;
 import com.example.demo.models.Order;
 import com.example.demo.models.OrderStatus;
 import com.example.demo.models.Product;
@@ -61,9 +63,13 @@ public class SystemService {
   }
 
   public Order createOrder(HashMap<String, Integer> selectedProducts, String orderType, String username) {
+    NotificationTemplate orderPlacementTemplate = new NotificationTemplate("OrderPlacement",
+    "Order Placement Confirmation", "Dear {customer}, your order for {product} is confirmed.", 
+    Arrays.asList("en", "fr"), Arrays.asList("email", "sms"), Arrays.asList("{customer}", "{product}"));
+
     boolean isOrderValid = isOrderValid(selectedProducts);
     if (!isOrderValid) {
-      return null;
+      return null;  
     }
     Customer customer = isUserExist(username);
     if (customer == null) {
@@ -102,6 +108,7 @@ public class SystemService {
           break;
       }
     }
+
     return order;
   }
   public Order createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
