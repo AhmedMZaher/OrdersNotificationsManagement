@@ -56,9 +56,4 @@ public class SimpleOrder extends Order {
   public void addOrder(Order order) {
     throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
   }
-  @Override
-  public void checkout(){
-    super.checkout();
-  }
-
 }

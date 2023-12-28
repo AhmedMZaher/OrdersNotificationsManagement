@@ -65,11 +65,7 @@ public class CompoundOrder extends Order {
   }
 
   @Override
-  public void checkout() {
-    super.checkout();
-    for(Order order : orders){
-      order.checkout();
-    }
+  public boolean checkout() {
+      return super.checkout() && orders.stream().allMatch(Order::checkout);
   }
-  
 }

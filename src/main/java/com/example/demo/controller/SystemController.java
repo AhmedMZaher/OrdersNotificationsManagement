@@ -48,8 +48,4 @@ public class SystemController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error logging in");
         }
     }
-
-    
-    
-    
 }

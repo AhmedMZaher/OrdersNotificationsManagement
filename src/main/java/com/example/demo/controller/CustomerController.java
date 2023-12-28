@@ -43,18 +43,18 @@ public class CustomerController {
     HashMap<String, Integer> selectedProducts = (HashMap<String, Integer>) requestBody.get("selectedProducts");
     HashMap<String, Integer> simpleOrders = (HashMap<String, Integer>) requestBody.get("simpleOrders");
 
-    String s = systemService.createCompoundOrder(selectedProducts, "CompoundOrder", username, simpleOrders);
-    // if(order == null){
-    //   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order was not created");
-    // }
-    // int orderID = order.getOrderID();
-    return ResponseEntity.ok("Order created successfully! with id: " + s);
+    Order order = systemService.createCompoundOrder(selectedProducts, "CompoundOrder", username, simpleOrders);
+    if(order == null){
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order was not created");
+    }
+    int orderID = order.getOrderID();
+    return ResponseEntity.ok("Order created successfully! with id: " + order.getOrderID());
   }
   @PostMapping("/checkout")
   public ResponseEntity<Object> postMethodName(@RequestParam String username, @RequestParam int orderID) {
       boolean isOrderChecked = systemService.checkOut(username, orderID);
       if(!isOrderChecked)
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("OrderID is not valid or insufficient balance");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again !");
       return ResponseEntity.ok("Order placed, Thank you for using our service");
   }
   

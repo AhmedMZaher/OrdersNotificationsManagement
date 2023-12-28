@@ -2,9 +2,10 @@ package com.example.demo.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public abstract class Order {
-  private static int orderID = 0;
+  private int orderID;
   protected Customer customer;
   protected HashMap<Product, Integer> products;
   private String shippingAddress;
@@ -12,7 +13,9 @@ public abstract class Order {
   private OrderStatus orderStatus;
 
   public Order(){
-    orderID++;
+    Random random = new Random();
+    this.orderID =  random.nextInt(1000000); // TODO generate unique random id
+    this.orderStatus = OrderStatus.ONHOLD;
     this.products = new HashMap<>();
   }
   // public Order(int orderID, Customer customer, String shippingAddress, HashMap<Integer, Integer> selectedProducts) {
@@ -87,9 +90,12 @@ public abstract class Order {
 
   public abstract void notifyCustomer();
   public abstract void addOrder(Order order);
-  public void checkout(){
+  public boolean checkout(){
     calcPrice();
+    if(customer.getCustomerData().getBalance() < totalAmount)
+      return false;
     customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - totalAmount);
+    return true;
   }
 }
 
