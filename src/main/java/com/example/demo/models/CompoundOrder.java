@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompoundOrder extends Order {
@@ -7,8 +8,8 @@ public class CompoundOrder extends Order {
   private List<Order> orders;
 
   public CompoundOrder() {
-    // TODO Auto-generated constructor stub
     super();
+    this.orders = new ArrayList<>();
   }
   
   @Override
@@ -35,10 +36,16 @@ public class CompoundOrder extends Order {
     throw new UnsupportedOperationException("Unimplemented method 'shipOrder'");
   }
 
+  public void addOrder(Order order) {
+    orders.add(order);
+  }
+
   @Override
   public float calcPrice() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'calcPrice'");
+    for (Order order : orders) {
+      totalAmount += order.calcPrice();
+    }
+    return totalAmount;
   }
 
   @Override

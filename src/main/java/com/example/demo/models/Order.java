@@ -1,23 +1,23 @@
 package com.example.demo.models;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Order {
   private int orderID;
   private Customer customer;
-  private HashMap<Product, Integer> products;
+  private Map<Integer, Integer> products;
   private String shippingAddress;
-  private double totalAmount;
+  protected float totalAmount;
   private OrderStatus orderStatus;
 
-  public Order(int orderID, Customer customer, HashMap<Product, Integer> products, String shippingAddress,
-      double totalAmount, OrderStatus orderStatus) {
+  public Order(int orderID, Customer customer, String shippingAddress, HashMap<Integer, Integer> selectedProducts) {
+    //TODO: Order ID is generated automatically
     this.orderID = orderID;
     this.customer = customer;
-    this.products = products;
     this.shippingAddress = shippingAddress;
-    this.totalAmount = totalAmount;
-    this.orderStatus = orderStatus;
+    this.orderStatus = OrderStatus.PLACED;
+    this.products = selectedProducts;
   }
   public Order() {
     // TODO Auto-generated constructor stub
@@ -31,7 +31,7 @@ public abstract class Order {
     return customer;
   }
 
-  public HashMap<Product, Integer> getProducts() {
+  public Map<Integer, Integer> getProducts() {
     return products;
   }
 
@@ -55,7 +55,7 @@ public abstract class Order {
     this.customer = customer;
   }
 
-  public void setProducts(HashMap<Product, Integer> products) {
+  public void setProducts(HashMap<Integer, Integer> products) {
     this.products = products;
   }
 
@@ -63,7 +63,7 @@ public abstract class Order {
     this.shippingAddress = shippingAddress;
   }
 
-  public void setTotalAmount(double totalAmount) {
+  public void setTotalAmount(float totalAmount) {
     this.totalAmount = totalAmount;
   }
 
