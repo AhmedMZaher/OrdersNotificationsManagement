@@ -185,4 +185,8 @@ public class SystemService {
     increaseQuantity(hashMap);
     return true;
   }
+  public ArrayList<String> getOrder(String username, int orderID){
+    Order order = findOrderByUsername(username, orderID);
+    return order.showDetails();
+  }
 }

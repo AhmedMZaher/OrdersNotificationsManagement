@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -80,7 +81,7 @@ public abstract class Order {
 
   public abstract void addItem(Product product, int quantity);
   
-  public abstract void showDetails();
+  public abstract ArrayList<String> showDetails();
 
   public abstract void shipOrder();
 

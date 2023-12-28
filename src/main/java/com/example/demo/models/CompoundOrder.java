@@ -22,11 +22,19 @@ public class CompoundOrder extends Order {
   }
 
   @Override
-  public void showDetails() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'showDetails'");
-  }
+  public ArrayList<String> showDetails() {
+    ArrayList<String> allOrders = new ArrayList<>();
+    for(HashMap.Entry<Product, Integer> entry : products.entrySet()){
+      allOrders.add(entry.getKey().toString());
+    }
 
+    for(Order order : orders){
+        ArrayList<String> temp = order.showDetails();
+        allOrders.addAll(temp);
+    }
+    return allOrders;
+  }
+    
   @Override
   public void shipOrder() {
     // TODO Auto-generated method stub

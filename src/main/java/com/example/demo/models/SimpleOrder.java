@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +17,12 @@ public class SimpleOrder extends Order {
   }
 
   @Override
-  public void showDetails() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'showDetails'");
+  public ArrayList<String> showDetails() {
+    ArrayList<String> allOrders = new ArrayList<>();
+    for(HashMap.Entry<Product, Integer> entry : products.entrySet()){
+      allOrders.add(entry.getKey().toString() + " Order Quantity: " + entry.getValue());
+    }
+    return allOrders;
   }
 
   @Override

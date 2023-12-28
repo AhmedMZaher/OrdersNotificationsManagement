@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.SystemService.SystemService;
 import com.example.demo.models.Order;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +75,13 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again !");
       return ResponseEntity.ok("Order is canceled successfully!");
   }
-  
+  @GetMapping("getOrder")
+  public ResponseEntity<Object> getOrder(@RequestParam String username, @RequestParam int orderID) {
+      ArrayList<String> orderDetails = systemService.getOrder(username, orderID);
+      if(orderDetails.isEmpty())
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again! ");
+      return ResponseEntity.ok(orderDetails);
+  }
   @GetMapping("/{customerId}/orders")
   public void getCustomerOrders() {
     // Implement logic to get customer orders
