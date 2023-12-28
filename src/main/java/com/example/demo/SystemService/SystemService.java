@@ -47,7 +47,6 @@ public class SystemService {
     productsList.add(new Product("16", "Plum", "Plum Inc.", "Fruit", 16.0, 100));
     productsList.add(new Product("17", "Avocado", "Avocado Inc.", "Fruit", 17.0, 100));
   }
-
   public boolean isOrderValid(HashMap<String, Integer> selectedProducts) {
     for (HashMap.Entry<String, Integer> entry : selectedProducts.entrySet()) {
       String serialNumber = entry.getKey();
@@ -104,7 +103,7 @@ public class SystemService {
     return order;
   }
   public Order createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
-    Order compoundOrder = createOrder(selectedProducts, "CompoundOrder", username); // TBD
+    CompoundOrder compoundOrder = (CompoundOrder)createOrder(selectedProducts, "CompoundOrder", username); // TBD
     Customer customer = isUserExist(username);
    
     compoundOrder.setCustomer(customer);
@@ -128,9 +127,22 @@ public class SystemService {
     
     if(order == null || order.getOrderStatus() != OrderStatus.ONHOLD)
       return false;
+
+    HashMap<Product, Integer> hashMap = order.getAllProductsQuantity();
+    decreaseQuantity(hashMap);
     order.setOrderStatus(OrderStatus.PLACED);
     order.checkout();
     return true;
+  }
+
+  private void decreaseQuantity(HashMap<Product, Integer> hashMap){
+    for(HashMap.Entry<Product, Integer> entry : hashMap.entrySet()){
+      for(Product product : productsList){
+        if(product.getSerialNumber().equals(entry.getKey().getSerialNumber())){
+          product.setRemainingQuantity(product.getRemainingQuantity() - entry.getValue());
+        }
+      }
+    }
   }
 
   public double getCustomerBalance(String username){
@@ -140,5 +152,13 @@ public class SystemService {
       }
     }
     return -1;
+  }
+  public int getProductsQuantity(String serialnumber){
+    for(Product product : productsList){
+        if(product.getSerialNumber().equals(serialnumber)){
+          return product.getRemainingQuantity();
+        }
+      }
+      return -1;
   }
 }

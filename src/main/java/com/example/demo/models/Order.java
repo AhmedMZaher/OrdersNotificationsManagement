@@ -13,6 +13,7 @@ public abstract class Order {
   private OrderStatus orderStatus;
 
   public Order(){
+    
     Random random = new Random();
     this.orderID =  random.nextInt(1000000); // TODO generate unique random id
     this.orderStatus = OrderStatus.ONHOLD;
@@ -89,13 +90,14 @@ public abstract class Order {
   public abstract void cancelOrder();
 
   public abstract void notifyCustomer();
-  public abstract void addOrder(Order order);
   public boolean checkout(){
     calcPrice();
     if(customer.getCustomerData().getBalance() < totalAmount)
       return false;
+    
     customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - totalAmount);
     return true;
   }
+  public abstract HashMap<Product, Integer> getAllProductsQuantity();
 }
 

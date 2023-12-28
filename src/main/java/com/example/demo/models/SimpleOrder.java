@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleOrder extends Order {
@@ -35,8 +36,8 @@ public class SimpleOrder extends Order {
   @Override
   public float calcPrice() {
     for (Map.Entry<Product, Integer> item : products.entrySet()) {
-            Integer value = item.getValue();
-            totalAmount += value;
+            double productPrice = item.getKey().getPrice();
+            totalAmount += (productPrice * item.getValue());
         }
         return totalAmount;
   }
@@ -53,7 +54,7 @@ public class SimpleOrder extends Order {
     throw new UnsupportedOperationException("Unimplemented method 'notifyCustomer'");
   }
   @Override
-  public void addOrder(Order order) {
-    throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
+  public HashMap<Product, Integer> getAllProductsQuantity(){
+    return products;
   }
 }
