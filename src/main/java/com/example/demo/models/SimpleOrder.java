@@ -26,9 +26,8 @@ public class SimpleOrder extends Order {
   }
 
   @Override
-  public void shipOrder() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'shipOrder'");
+  public void shipOrder(double shippingFees) {
+    customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - shippingFees);
   }
 
 

@@ -83,7 +83,7 @@ public abstract class Order {
   
   public abstract ArrayList<String> showDetails();
 
-  public abstract void shipOrder();
+  public abstract void shipOrder(double shippingFees);
 
   public void calcPrice(){
     for (Map.Entry<Product, Integer> item : products.entrySet()) {

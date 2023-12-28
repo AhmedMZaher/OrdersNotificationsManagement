@@ -82,6 +82,15 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again! ");
       return ResponseEntity.ok(orderDetails);
   }
+  @GetMapping("/shipOrder")
+  public ResponseEntity<Object> shipOrder(@RequestParam String username, @RequestParam int orderID) {
+      boolean isShipped = systemService.shipOrder(username, orderID);
+      if(!isShipped){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again! ");
+      }
+      return ResponseEntity.ok("Order is shipped!");
+  }
+  
   @GetMapping("/{customerId}/orders")
   public void getCustomerOrders() {
     // Implement logic to get customer orders

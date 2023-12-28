@@ -18,7 +18,7 @@ public class SystemService {
   private List<Product> productsList = new ArrayList<>();
   private List<Customer> customersList = new ArrayList<>();
   private OrderFactory orderFactory = new OrderFactory();
-
+  static double shippingFees = 15;
   public void addCustomer(Customer customer) {
     customersList.add(customer);
   }
@@ -188,5 +188,13 @@ public class SystemService {
   public ArrayList<String> getOrder(String username, int orderID){
     Order order = findOrderByUsername(username, orderID);
     return order.showDetails();
+  }
+  public boolean shipOrder(String username, int orderID){
+    Order order = findOrderByUsername(username, orderID);
+    if(order == null || order.getOrderStatus() != OrderStatus.PLACED)
+      return false;
+
+    order.shipOrder(shippingFees);
+    return true;
   }
 }

@@ -36,9 +36,9 @@ public class CompoundOrder extends Order {
   }
     
   @Override
-  public void shipOrder() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'shipOrder'");
+  public void shipOrder(double shippingFees) {
+    for(Order order : orders)
+      order.shipOrder(shippingFees);
   }
   public void addOrder(Order order) {
     orders.add(order);
