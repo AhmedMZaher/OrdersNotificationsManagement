@@ -22,12 +22,6 @@ public class CompoundOrder extends Order {
   }
 
   @Override
-  public void removeItem(Product product) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'removeItem'");
-  }
-
-  @Override
   public void showDetails() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'showDetails'");

@@ -148,6 +148,16 @@ public class SystemService {
     }
   }
 
+  private void increaseQuantity(HashMap<Product, Integer> hashMap){
+    for(HashMap.Entry<Product, Integer> entry : hashMap.entrySet()){
+      for(Product product : productsList){
+        if(product.getSerialNumber().equals(entry.getKey().getSerialNumber())){
+          product.setRemainingQuantity(product.getRemainingQuantity() + entry.getValue());
+        }
+      }
+    }
+  }
+
   public double getCustomerBalance(String username){
     for (Customer customer : customersList) {
       if (customer.getCustomerData().getUsername().equals(username)) {
@@ -163,5 +173,16 @@ public class SystemService {
         }
       }
       return -1;
+  }
+  public boolean cancelOrder(String username, int orderID){
+    Order order = findOrderByUsername(username, orderID);
+    if(order == null)
+      return false;
+    double CustomerBalance = order.getCustomer().getCustomerData().getBalance();
+    double orderPrice = order.getTotalAmount();
+    order.getCustomer().getCustomerData().setBalance(CustomerBalance + orderPrice);
+    HashMap<Product, Integer> hashMap = order.getAllProductsQuantity();
+    increaseQuantity(hashMap);
+    return true;
   }
 }

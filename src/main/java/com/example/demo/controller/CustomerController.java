@@ -67,6 +67,14 @@ public class CustomerController {
     return ResponseEntity.ok(balance);
   }
 
+  @GetMapping("cancelOrder")
+  public ResponseEntity<Object> cancelOrder(@RequestParam String username, @RequestParam int orderID) {
+      boolean isOrderCanceled = systemService.cancelOrder(username, orderID);
+      if(isOrderCanceled == false)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again !");
+      return ResponseEntity.ok("Order is canceled successfully!");
+  }
+  
   @GetMapping("/{customerId}/orders")
   public void getCustomerOrders() {
     // Implement logic to get customer orders

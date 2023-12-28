@@ -79,9 +79,7 @@ public abstract class Order {
   }
 
   public abstract void addItem(Product product, int quantity);
-
-  public abstract void removeItem(Product product);
-
+  
   public abstract void showDetails();
 
   public abstract void shipOrder();
