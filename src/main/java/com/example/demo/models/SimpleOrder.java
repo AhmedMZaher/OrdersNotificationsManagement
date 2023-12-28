@@ -1,11 +1,17 @@
 package com.example.demo.models;
 
+import java.util.Map;
+
 public class SimpleOrder extends Order {
 
+  public SimpleOrder(){
+    super();
+  }
   @Override
   public void addItem(Product product, int quantity) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'addItem'");
+    products.put(product,quantity);
+    
   }
 
   @Override
@@ -28,8 +34,11 @@ public class SimpleOrder extends Order {
 
   @Override
   public float calcPrice() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'calcPrice'");
+    for (Map.Entry<Product, Integer> item : products.entrySet()) {
+            Integer value = item.getValue();
+            totalAmount += value;
+        }
+        return totalAmount;
   }
 
   @Override
@@ -43,5 +52,13 @@ public class SimpleOrder extends Order {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'notifyCustomer'");
   }
-  
+  @Override
+  public void addOrder(Order order) {
+    throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
+  }
+  // @Override
+  // public void checkout(){
+  //   customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - totalAmount);
+  // }
+
 }

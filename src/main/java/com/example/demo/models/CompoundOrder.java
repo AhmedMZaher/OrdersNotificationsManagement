@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CompoundOrder extends Order {
 
@@ -14,8 +15,7 @@ public class CompoundOrder extends Order {
   
   @Override
   public void addItem(Product product, int quantity) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'addItem'");
+    products.put(product,quantity);
   }
 
   @Override
@@ -35,17 +35,21 @@ public class CompoundOrder extends Order {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'shipOrder'");
   }
-
+  @Override
   public void addOrder(Order order) {
     orders.add(order);
   }
 
   @Override
   public float calcPrice() {
-    for (Order order : orders) {
-      totalAmount += order.calcPrice();
-    }
-    return totalAmount;
+      for (Map.Entry<Product, Integer> item : products.entrySet()) {
+              Integer value = item.getValue();
+              totalAmount += value;
+      }
+      for (Order order : orders) {
+        totalAmount += order.calcPrice();
+      }
+      return totalAmount;
   }
 
   @Override
@@ -58,6 +62,13 @@ public class CompoundOrder extends Order {
   public void notifyCustomer() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'notifyCustomer'");
+  }
+
+  @Override
+  public void checkout() {
+    for(Order order : orders){
+      order.checkout();
+    }
   }
   
 }

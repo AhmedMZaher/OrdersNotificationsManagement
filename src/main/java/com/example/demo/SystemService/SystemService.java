@@ -1,11 +1,13 @@
 package com.example.demo.SystemService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Factory.OrderFactory;
+import com.example.demo.models.CompoundOrder;
 import com.example.demo.models.Customer;
 import com.example.demo.models.Order;
 import com.example.demo.models.Product;
@@ -26,30 +28,30 @@ public class SystemService {
   }
 
   public SystemService() {
-    productsList.add(new Product(1, "Apple", "Apple Inc.", "Fruit", 1.0, 100));
-    productsList.add(new Product(2, "Banana", "Banana Inc.", "Fruit", 2.0, 100));
-    productsList.add(new Product(3, "Orange", "Orange Inc.", "Fruit", 3.0, 100));
-    productsList.add(new Product(4, "Mango", "Mango Inc.", "Fruit", 4.0, 100));
-    productsList.add(new Product(5, "Pineapple", "Pineapple Inc.", "Fruit", 5.0, 100));
-    productsList.add(new Product(6, "Strawberry", "Strawberry Inc.", "Fruit", 6.0, 100));
-    productsList.add(new Product(7, "Blueberry", "Blueberry Inc.", "Fruit", 7.0, 100));
-    productsList.add(new Product(8, "Raspberry", "Raspberry Inc.", "Fruit", 8.0, 100));
-    productsList.add(new Product(9, "Blackberry", "Blackberry Inc.", "Fruit", 9.0, 100));
-    productsList.add(new Product(10, "Watermelon", "Watermelon Inc.", "Fruit", 10.0, 100));
-    productsList.add(new Product(11, "Grapes", "Grapes Inc.", "Fruit", 11.0, 100));
-    productsList.add(new Product(12, "Cherry", "Cherry Inc.", "Fruit", 12.0, 100));
-    productsList.add(new Product(13, "Kiwi", "Kiwi Inc.", "Fruit", 13.0, 100));
-    productsList.add(new Product(14, "Peach", "Peach Inc.", "Fruit", 14.0, 100));
-    productsList.add(new Product(15, "Pear", "Pear Inc.", "Fruit", 15.0, 100));
-    productsList.add(new Product(16, "Plum", "Plum Inc.", "Fruit", 16.0, 100));
-    productsList.add(new Product(17, "Avocado", "Avocado Inc.", "Fruit", 17.0, 100));
+    productsList.add(new Product("1", "Apple", "Apple Inc.", "Fruit", 1.0, 100));
+    productsList.add(new Product("2", "Banana", "Banana Inc.", "Fruit", 2.0, 100));
+    productsList.add(new Product("3", "Orange", "Orange Inc.", "Fruit", 3.0, 100));
+    productsList.add(new Product("4", "Mango", "Mango Inc.", "Fruit", 4.0, 100));
+    // productsList.add(new Product(5, "Pineapple", "Pineapple Inc.", "Fruit", 5.0, 100));
+    // productsList.add(new Product(6, "Strawberry", "Strawberry Inc.", "Fruit", 6.0, 100));
+    // productsList.add(new Product(7, "Blueberry", "Blueberry Inc.", "Fruit", 7.0, 100));
+    // productsList.add(new Product(8, "Raspberry", "Raspberry Inc.", "Fruit", 8.0, 100));
+    // productsList.add(new Product(9, "Blackberry", "Blackberry Inc.", "Fruit", 9.0, 100));
+    // productsList.add(new Product(10, "Watermelon", "Watermelon Inc.", "Fruit", 10.0, 100));
+    // productsList.add(new Product(11, "Grapes", "Grapes Inc.", "Fruit", 11.0, 100));
+    // productsList.add(new Product(12, "Cherry", "Cherry Inc.", "Fruit", 12.0, 100));
+    // productsList.add(new Product(13, "Kiwi", "Kiwi Inc.", "Fruit", 13.0, 100));
+    // productsList.add(new Product(14, "Peach", "Peach Inc.", "Fruit", 14.0, 100));
+    // productsList.add(new Product(15, "Pear", "Pear Inc.", "Fruit", 15.0, 100));
+    // productsList.add(new Product(16, "Plum", "Plum Inc.", "Fruit", 16.0, 100));
+    // productsList.add(new Product(17, "Avocado", "Avocado Inc.", "Fruit", 17.0, 100));
   }
 
-  public boolean isOrderValid(Map<Integer, Integer> selectedProducts) {
-    for (Map.Entry<Integer, Integer> entry : selectedProducts.entrySet()) {
-      Integer serialNumber = entry.getKey();
+  public boolean isOrderValid(HashMap<String, Integer> selectedProducts) {
+    for (HashMap.Entry<String, Integer> entry : selectedProducts.entrySet()) {
+      String serialNumber = entry.getKey();
       Integer quantity = entry.getValue();
-      Product product = productsList.stream().filter(p -> p.getSerialNumber() == serialNumber).findFirst().orElse(null);
+      Product product = productsList.stream().filter(p -> p.getSerialNumber().equals(serialNumber)).findFirst().orElse(null);
       if (product == null || product.getRemainingQuantity() < quantity) {
         return false;
       }
@@ -57,29 +59,74 @@ public class SystemService {
     return true;
   }
 
-  public boolean createOrder(Map<Integer, Integer> selectedProducts, String orderType, String username) {
+  public Order createOrder(HashMap<String, Integer> selectedProducts, String orderType, String username) {
     boolean isOrderValid = isOrderValid(selectedProducts);
     if (!isOrderValid) {
-      return false;
+      return null;
     }
     Customer customer = isUserExist(username);
     if (customer == null) {
-      return false;
+      return null;
     }
     Order order = this.orderFactory.createOrder(orderType);
-    for (Map.Entry<Integer, Integer> entry : selectedProducts.entrySet()) {
-      Integer serialNumber = entry.getKey();
+
+    for (HashMap.Entry<String, Integer> entry : selectedProducts.entrySet()) {
+      String serialNumber = entry.getKey();
       Integer quantity = entry.getValue();
-      Product product = productsList.stream().filter(p -> p.getSerialNumber() == serialNumber).findFirst()
+      Product product = productsList.stream().filter(p -> p.getSerialNumber().equals(serialNumber)).findFirst()
           .orElse(null);
+      if(product == null)
+        return null;
       order.addItem(product, quantity);
     }
-    float totalAmount = order.calcPrice();
-    if (customer.getCustomerData().getBalance() < totalAmount) {
-      return false;
-    }
-    customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - totalAmount);
+    order.setCustomer(customer);
     customer.placeOrder(order);
+    return order;
+  }
+
+  private Order findOrderByUsername(String username, int orderID){
+    Customer customer = isUserExist(username);
+    Order order = null;
+    List<Order> orders = customer.getOrders();
+    for(Order currOrder : orders){
+      if(currOrder.getOrderID() == orderID){
+          order = currOrder;
+          break;
+      }
+    }
+    return order;
+  }
+  public Order createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
+    Order compoundOrder = createOrder(selectedProducts, "CompoundOrder", username);
+    Customer customer = isUserExist(username);
+    compoundOrder.setCustomer(customer);
+    customer.placeOrder(compoundOrder);
+
+    for(HashMap.Entry<String, Integer> entery : simpleOrders.entrySet()){
+      String currUsername = entery.getKey();
+      int currOrderID = entery.getValue();
+      Order currOrder = findOrderByUsername(currUsername, currOrderID);
+      compoundOrder.addOrder(currOrder);
+    }
+
+    return compoundOrder;
+  }
+
+
+  public boolean checkOut(String customerUserName, int orderID){
+    Order order = findOrderByUsername(customerUserName, orderID);
+    if(order == null)
+      return false;
+    order.checkout();
     return true;
+  }
+
+  public double getCustomerBalance(String username){
+    for (Customer customer : customersList) {
+      if (customer.getCustomerData().getUsername().equals(username)) {
+          return customer.getCustomerData().getBalance();
+      }
+    }
+    return -1;
   }
 }

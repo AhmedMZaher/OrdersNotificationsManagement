@@ -1,14 +1,14 @@
 package com.example.demo.models;
 
 public class Product {
-  private int serialNumber;
+  private String serialNumber;
   private String name;
   private String vendor;
   private String category;
   private double price;
   private int remainingQuantity;
 
-  public Product(int serialNumber, String name, String vendor, String category, double price, int remainingQuantity) {
+  public Product(String serialNumber, String name, String vendor, String category, double price, int remainingQuantity) {
     this.serialNumber = serialNumber;
     this.name = name;
     this.vendor = vendor;
@@ -17,7 +17,7 @@ public class Product {
     this.remainingQuantity = remainingQuantity;
   }
 
-  public int getSerialNumber() {
+  public String getSerialNumber() {
     return serialNumber;
   }
 
@@ -41,7 +41,7 @@ public class Product {
     return remainingQuantity;
   }
 
-  public void setSerialNumber(int serialNumber) {
+  public void setSerialNumber(String serialNumber) {
     this.serialNumber = serialNumber;
   }
 

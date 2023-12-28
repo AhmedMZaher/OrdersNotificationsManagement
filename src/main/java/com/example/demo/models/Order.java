@@ -4,24 +4,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Order {
-  private int orderID;
-  private Customer customer;
-  private Map<Integer, Integer> products;
+  private static int orderID = 0;
+  protected Customer customer;
+  protected HashMap<Product, Integer> products;
   private String shippingAddress;
   protected float totalAmount;
   private OrderStatus orderStatus;
 
-  public Order(int orderID, Customer customer, String shippingAddress, HashMap<Integer, Integer> selectedProducts) {
-    //TODO: Order ID is generated automatically
-    this.orderID = orderID;
-    this.customer = customer;
-    this.shippingAddress = shippingAddress;
-    this.orderStatus = OrderStatus.PLACED;
-    this.products = selectedProducts;
+  public Order(){
+    orderID++;
+    this.products = new HashMap<>();
   }
-  public Order() {
-    // TODO Auto-generated constructor stub
-  }
+  // public Order(int orderID, Customer customer, String shippingAddress, HashMap<Integer, Integer> selectedProducts) {
+  //   //TODO: Order ID is generated automatically
+  //   this.orderID = orderID;
+  //   this.customer = customer;
+  //   this.shippingAddress = shippingAddress;
+  //   this.orderStatus = OrderStatus.PLACED;
+  //   this.products = selectedProducts;
+  // }
+  
 
   public int getOrderID() {
     return orderID;
@@ -31,7 +33,7 @@ public abstract class Order {
     return customer;
   }
 
-  public Map<Integer, Integer> getProducts() {
+  public HashMap<Product, Integer> getProducts() {
     return products;
   }
 
@@ -55,7 +57,7 @@ public abstract class Order {
     this.customer = customer;
   }
 
-  public void setProducts(HashMap<Integer, Integer> products) {
+  public void setProducts(HashMap<Product, Integer> products) {
     this.products = products;
   }
 
@@ -84,5 +86,10 @@ public abstract class Order {
   public abstract void cancelOrder();
 
   public abstract void notifyCustomer();
+  public abstract void addOrder(Order order);
+  public void checkout(){
+    calcPrice();
+    customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - totalAmount);
+  }
 }
 
