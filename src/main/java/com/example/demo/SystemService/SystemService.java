@@ -85,7 +85,13 @@ public class SystemService {
   }
 
   private Order findOrderByUsername(String username, int orderID){
-    Customer customer = isUserExist(username);
+    Customer customer = null;
+    for(Customer ccustomer : customersList){
+      if(ccustomer.getCustomerData().getUsername().equals(username)){
+       customer = ccustomer;
+       break;
+      }
+    }
     Order order = null;
     List<Order> orders = customer.getOrders();
     for(Order currOrder : orders){
@@ -96,7 +102,7 @@ public class SystemService {
     }
     return order;
   }
-  public Order createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
+  public String createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
     Order compoundOrder = createOrder(selectedProducts, "CompoundOrder", username);
     Customer customer = isUserExist(username);
     compoundOrder.setCustomer(customer);
@@ -105,11 +111,14 @@ public class SystemService {
     for(HashMap.Entry<String, Integer> entery : simpleOrders.entrySet()){
       String currUsername = entery.getKey();
       int currOrderID = entery.getValue();
-      Order currOrder = findOrderByUsername(currUsername, currOrderID);
-      compoundOrder.addOrder(currOrder);
+      return currUsername;
+      // Order currOrder = findOrderByUsername(currUsername, currOrderID);
+      // if(currOrder == null || !currOrder.getCustomer().getCustomerData().getUsername().equals(currUsername))
+      //   return "SIMPLE NOT HERE";
+      // compoundOrder.addOrder(currOrder);
     }
 
-    return compoundOrder;
+    return "ended";
   }
 
 

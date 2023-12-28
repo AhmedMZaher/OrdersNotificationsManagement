@@ -66,6 +66,7 @@ public class CompoundOrder extends Order {
 
   @Override
   public void checkout() {
+    super.checkout();
     for(Order order : orders){
       order.checkout();
     }

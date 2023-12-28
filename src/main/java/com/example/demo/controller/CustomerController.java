@@ -43,13 +43,12 @@ public class CustomerController {
     HashMap<String, Integer> selectedProducts = (HashMap<String, Integer>) requestBody.get("selectedProducts");
     HashMap<String, Integer> simpleOrders = (HashMap<String, Integer>) requestBody.get("simpleOrders");
 
-    Order order = systemService.createCompoundOrder(selectedProducts, "CompoundOrder", username, simpleOrders);
-    if(order == null){
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order was not created");
-    }
-    int orderID = order.getOrderID();
-    return ResponseEntity.ok("Order created successfully! with id: " + orderID);
-    // return ResponseEntity.ok("Order created successfully! with id: ");
+    String s = systemService.createCompoundOrder(selectedProducts, "CompoundOrder", username, simpleOrders);
+    // if(order == null){
+    //   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order was not created");
+    // }
+    // int orderID = order.getOrderID();
+    return ResponseEntity.ok("Order created successfully! with id: " + s);
   }
   @PostMapping("/checkout")
   public ResponseEntity<Object> postMethodName(@RequestParam String username, @RequestParam int orderID) {
