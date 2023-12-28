@@ -52,10 +52,10 @@ public class CustomerController {
   }
   @PostMapping("/checkout")
   public ResponseEntity<Object> postMethodName(@RequestParam String username, @RequestParam int orderID) {
-      boolean isOrderChecked = systemService.checkOut(username, orderID);
-      if(!isOrderChecked)
+      double isOrderChecked = systemService.checkOut(username, orderID);
+      if(isOrderChecked == -1)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again !");
-      return ResponseEntity.ok("Order placed, Thank you for using our service");
+      return ResponseEntity.ok("Order placed, Thank you for using our service with amount: " + isOrderChecked);
   }
   
   @GetMapping("/getBalance")

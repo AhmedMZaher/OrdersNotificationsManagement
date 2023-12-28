@@ -42,17 +42,6 @@ public class CompoundOrder extends Order {
     orders.add(order);
   }
 
-  @Override
-  public float calcPrice() {
-      for (Map.Entry<Product, Integer> item : products.entrySet()) {
-              double productPrice = item.getKey().getPrice();
-              totalAmount += (productPrice * item.getValue());
-      }
-      for (Order order : orders) {
-        totalAmount += order.calcPrice();
-      }
-      return totalAmount;
-  }
 
   @Override
   public void cancelOrder() {

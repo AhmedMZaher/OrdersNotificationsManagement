@@ -29,6 +29,7 @@ public class SystemService {
   }
 
   public SystemService() {
+    // 1 + 6 + 10 = 17 + 6
     productsList.add(new Product("1", "Apple", "Apple Inc.", "Fruit", 1.0, 100));
     productsList.add(new Product("2", "Banana", "Banana Inc.", "Fruit", 2.0, 100));
     productsList.add(new Product("3", "Orange", "Orange Inc.", "Fruit", 3.0, 100));
@@ -79,6 +80,7 @@ public class SystemService {
         return null;
       order.addItem(product, quantity);
     }
+    order.calcPrice();
     order.setCustomer(customer);
     customer.placeOrder(order);
     return order;
@@ -122,17 +124,18 @@ public class SystemService {
   }
 
 
-  public boolean checkOut(String customerUserName, int orderID){
+  public double checkOut(String customerUserName, int orderID){
     Order order = findOrderByUsername(customerUserName, orderID);
     
     if(order == null || order.getOrderStatus() != OrderStatus.ONHOLD)
-      return false;
+      return -1;
 
     HashMap<Product, Integer> hashMap = order.getAllProductsQuantity();
     decreaseQuantity(hashMap);
     order.setOrderStatus(OrderStatus.PLACED);
     order.checkout();
-    return true;
+    
+    return order.getTotalAmount();
   }
 
   private void decreaseQuantity(HashMap<Product, Integer> hashMap){

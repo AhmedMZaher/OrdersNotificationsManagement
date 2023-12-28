@@ -13,6 +13,7 @@ public abstract class Order {
   private OrderStatus orderStatus;
 
   public Order(){
+    totalAmount = 0;
     
     Random random = new Random();
     this.orderID =  random.nextInt(1000000); // TODO generate unique random id
@@ -85,13 +86,18 @@ public abstract class Order {
 
   public abstract void shipOrder();
 
-  public abstract float calcPrice();
+  public void calcPrice(){
+    for (Map.Entry<Product, Integer> item : products.entrySet()) {
+      double productPrice = item.getKey().getPrice();
+      totalAmount += (productPrice * item.getValue());
+    }
+  }
 
   public abstract void cancelOrder();
 
   public abstract void notifyCustomer();
   public boolean checkout(){
-    calcPrice();
+    
     if(customer.getCustomerData().getBalance() < totalAmount)
       return false;
     

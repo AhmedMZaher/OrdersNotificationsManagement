@@ -33,14 +33,6 @@ public class SimpleOrder extends Order {
     throw new UnsupportedOperationException("Unimplemented method 'shipOrder'");
   }
 
-  @Override
-  public float calcPrice() {
-    for (Map.Entry<Product, Integer> item : products.entrySet()) {
-            double productPrice = item.getKey().getPrice();
-            totalAmount += (productPrice * item.getValue());
-        }
-        return totalAmount;
-  }
 
   @Override
   public void cancelOrder() {
