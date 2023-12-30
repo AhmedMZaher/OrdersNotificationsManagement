@@ -49,6 +49,9 @@ public class SystemController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginData loginData) {
+        if(loggingController.isLoggedIn()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please sign out first!");
+        }
         Boolean isUserValid = systemService.isUserValid(loginData.getUsername(), loginData.getPassword());
         
         if (isUserValid == false) {
@@ -58,7 +61,13 @@ public class SystemController {
             loggingController.login(loginData.getUsername(), loginData.getPassword());
             return ResponseEntity.ok("Login successful!");
         }
-            
-    
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        if(!loggingController.isLoggedIn()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in!");
+        }
+        loggingController.logout();
+        return ResponseEntity.ok("You have logged out successfully!");
     }
 }
