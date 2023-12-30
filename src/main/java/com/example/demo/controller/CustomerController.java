@@ -111,15 +111,5 @@ public class CustomerController {
       }
       return ResponseEntity.ok("Order is shipped!");
   }
-  
-  @GetMapping("/{customerId}/orders")
-  public void getCustomerOrders() {
-    // Implement logic to get customer orders
-  }
-
-  @GetMapping("/{customerId}/orders/{orderId}")
-  public void getCustomerOrder() {
-    // Implement logic to get customer order
-  }
 
 }
