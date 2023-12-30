@@ -28,7 +28,7 @@ public class SystemService {
   }
 
   public Customer isUserExist(String username) {
-      return customersList.stream().filter(customer -> customer.getCustomerData().getUsername().equals(username))
+      return customersList.stream().filter(customer -> customer.getLoginData().getUsername().equals(username))
               .findFirst().orElse(null);
   }
 
@@ -52,6 +52,7 @@ public class SystemService {
     productsList.add(new Product("16", "Plum", "Plum Inc.", "Fruit", 16.0, 100));
     productsList.add(new Product("17", "Avocado", "Avocado Inc.", "Fruit", 17.0, 100));
   }
+  
   public boolean isOrderValid(HashMap<String, Integer> selectedProducts) {
     for (HashMap.Entry<String, Integer> entry : selectedProducts.entrySet()) {
       String serialNumber = entry.getKey();
@@ -100,7 +101,7 @@ public class SystemService {
   private Order findOrderByUsername(String username, int orderID){
     Customer customer = null;
     for(Customer ccustomer : customersList){
-      if(ccustomer.getCustomerData().getUsername().equals(username)){
+      if(ccustomer.getLoginData().getUsername().equals(username)){
        customer = ccustomer;
        break;
       }
@@ -171,7 +172,7 @@ public class SystemService {
 
   public double getCustomerBalance(String username){
     for (Customer customer : customersList) {
-      if (customer.getCustomerData().getUsername().equals(username)) {
+      if (customer.getLoginData().getUsername().equals(username)) {
           return customer.getCustomerData().getBalance();
       }
     }
@@ -213,5 +214,15 @@ public class SystemService {
     notificationQueueService.enqueueNotification(orderShippmentTemplate);
     return true;
     
+  }
+  public boolean isUserValid(String username, String password){
+    for(Customer customer : customersList){
+      if(customer.getLoginData().getUsername().equals(username)){
+        if(customer.getLoginData().getPassword().equals(password)){
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
