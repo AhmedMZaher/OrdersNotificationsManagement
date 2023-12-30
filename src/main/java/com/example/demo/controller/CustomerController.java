@@ -106,7 +106,7 @@ public class CustomerController {
       return ResponseEntity.ok(orderDetails);
   }
   @GetMapping("/shipOrder")
-  public ResponseEntity<Object> shipOrder(@RequestParam String username, @RequestParam int orderID) {
+  public ResponseEntity<Object> shipOrder(@RequestParam int orderID) {
       if(!loggingController.isLoggedIn()){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
       }

@@ -69,7 +69,7 @@ public class UserService {
   }
   public boolean cancelOrder(String username, int orderID){
     Order order = systemService.findOrderByUsername(username, orderID);
-    if(order == null)
+    if(order == null || order.getOrderStatus() != OrderStatus.PLACED)
       return false;
     double CustomerBalance = order.getCustomer().getCustomerData().getBalance();
     double orderPrice = order.getTotalAmount();

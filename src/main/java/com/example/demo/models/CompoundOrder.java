@@ -37,6 +37,7 @@ public class CompoundOrder extends Order {
     
   @Override
   public void shipOrder(double shippingFees) {
+    setOrderStatus(OrderStatus.SHIPPED);
     for(Order order : orders)
       order.shipOrder(shippingFees);
   }

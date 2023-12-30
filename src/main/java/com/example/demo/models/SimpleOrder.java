@@ -27,6 +27,7 @@ public class SimpleOrder extends Order {
 
   @Override
   public void shipOrder(double shippingFees) {
+    setOrderStatus(OrderStatus.SHIPPED);
     customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - shippingFees);
   }
 
