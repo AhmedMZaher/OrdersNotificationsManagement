@@ -75,6 +75,7 @@ public class UserService {
     double orderPrice = order.getTotalAmount();
     order.getCustomer().getCustomerData().setBalance(CustomerBalance + orderPrice);
     HashMap<Product, Integer> hashMap = order.getAllProductsQuantity();
+    order.setOrderStatus(OrderStatus.CANCELLED);
     increaseQuantity(hashMap);
     return true;
   }

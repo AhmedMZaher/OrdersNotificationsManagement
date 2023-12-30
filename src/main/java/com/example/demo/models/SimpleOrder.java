@@ -31,18 +31,6 @@ public class SimpleOrder extends Order {
     customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - shippingFees);
   }
 
-
-  @Override
-  public void cancelOrder() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'cancelOrder'");
-  }
-
-  @Override
-  public void notifyCustomer() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'notifyCustomer'");
-  }
   @Override
   public HashMap<Product, Integer> getAllProductsQuantity(){
     return products;

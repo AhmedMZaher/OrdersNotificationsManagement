@@ -92,9 +92,7 @@ public abstract class Order {
     }
   }
 
-  public abstract void cancelOrder();
-
-  public abstract void notifyCustomer();
+ 
   public boolean checkout(){
     
     if(customer.getCustomerData().getBalance() < totalAmount)

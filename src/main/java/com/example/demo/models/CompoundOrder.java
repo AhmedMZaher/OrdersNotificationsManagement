@@ -46,17 +46,6 @@ public class CompoundOrder extends Order {
   }
 
 
-  @Override
-  public void cancelOrder() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'cancelOrder'");
-  }
-
-  @Override
-  public void notifyCustomer() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'notifyCustomer'");
-  }
 
   @Override
   public boolean checkout() {

@@ -99,7 +99,7 @@ public class OrderService {
     Order order = null;
     List<Order> orders = customer.getOrders();
     for(Order currOrder : orders){
-      if(currOrder.getOrderID() == orderID){
+      if(currOrder.getOrderID() == orderID && currOrder.getOrderStatus() != OrderStatus.CANCELLED){
           order = currOrder;
           break;
       }
