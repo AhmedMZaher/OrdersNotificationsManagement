@@ -13,7 +13,9 @@ import com.example.demo.models.Customer;
 import com.example.demo.models.NotificationTemplate;
 import com.example.demo.models.Order;
 import com.example.demo.models.OrderStatus;
+import com.example.demo.models.PlacementTemplate;
 import com.example.demo.models.Product;
+import com.example.demo.models.ShipmentTemplate;
 
 @Service
 public class SystemService {
@@ -90,11 +92,9 @@ public class SystemService {
     customer.placeOrder(order);
 
 
-    NotificationTemplate orderPlacementTemplate = new NotificationTemplate("OrderPlacement",
-    "Order Placement Confirmation", "Dear " + username + ", your order for "+ String.valueOf(order.getOrderID()) +"is confirmed.", 
-    Arrays.asList("en", "fr"), Arrays.asList("email", "sms"), Arrays.asList(username, String.valueOf(order.getOrderID())));
-    
-    notificationQueueService.enqueueNotification(orderPlacementTemplate);
+    NotificationTemplate notificationTemplate = new PlacementTemplate(order);
+    notificationQueueService.enqueueNotification(notificationTemplate);
+
     return order;
   }
 
@@ -207,11 +207,10 @@ public class SystemService {
       return false;
 
     order.shipOrder(shippingFees);
-    NotificationTemplate orderShippmentTemplate = new NotificationTemplate("OrderShipped",
-    "Order Shippment Confirmation", "Dear " + username + ", your order for "+ String.valueOf(order.getOrderID()) +"is Shipped.", 
-    Arrays.asList("en", "fr"), Arrays.asList("email", "sms"), Arrays.asList(username, String.valueOf(order.getOrderID())));
     
-    notificationQueueService.enqueueNotification(orderShippmentTemplate);
+    NotificationTemplate notificationTemplate = new ShipmentTemplate(order);
+    notificationQueueService.enqueueNotification(notificationTemplate);
+
     return true;
     
   }

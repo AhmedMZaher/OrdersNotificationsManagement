@@ -19,4 +19,8 @@ public class NotificationQueueService {
     public List<NotificationTemplate> getQueueContent() {
         return new ArrayList<NotificationTemplate>(notificationQueue);
     }
+    public NotificationTemplate dequeue(){
+        return notificationQueue.poll();
+    }
 }
+// notif.getCustomer.getStartegy.send()

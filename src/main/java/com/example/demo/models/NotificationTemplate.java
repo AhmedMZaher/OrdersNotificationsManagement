@@ -2,25 +2,20 @@ package com.example.demo.models;
 
 import java.util.List;
 
-public class NotificationTemplate {
+public abstract class NotificationTemplate {
     private String name;
     private String subject;
     private String content;
     private List<String> availableLanguages;
-    private List<String> placeholders;
-
-    // Constructors
-    public NotificationTemplate() {
-        // Default constructor
-    }
+    private Customer customer;
 
     public NotificationTemplate(String name, String subject, String content,
-                                List<String> availableLanguages, List<String> placeholders) {
+                                List<String> availableLanguages, Customer customer) {
         this.name = name;
         this.subject = subject;
         this.content = content;
         this.availableLanguages = availableLanguages;
-        this.placeholders = placeholders;
+        this.customer = customer;
     }
 
     // Getters and Setters
@@ -56,15 +51,11 @@ public class NotificationTemplate {
         this.availableLanguages = availableLanguages;
     }
 
-    public List<String> getPlaceholders() {
-        return placeholders;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setPlaceholders(List<String> placeholders) {
-        this.placeholders = placeholders;
+    public void setCustomers(Customer customer) {
+        this.customer = customer;
     }
-    public NotificationTemplate createTemplate(String username, Order order){
-        return new NotificationTemplate();
-    }
-
 }
