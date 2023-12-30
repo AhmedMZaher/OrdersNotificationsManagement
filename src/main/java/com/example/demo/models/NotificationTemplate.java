@@ -7,7 +7,6 @@ public class NotificationTemplate {
     private String subject;
     private String content;
     private List<String> availableLanguages;
-    private List<String> availableChannels;
     private List<String> placeholders;
 
     // Constructors
@@ -16,12 +15,11 @@ public class NotificationTemplate {
     }
 
     public NotificationTemplate(String name, String subject, String content,
-                                List<String> availableLanguages, List<String> availableChannels, List<String> placeholders) {
+                                List<String> availableLanguages, List<String> placeholders) {
         this.name = name;
         this.subject = subject;
         this.content = content;
         this.availableLanguages = availableLanguages;
-        this.availableChannels = availableChannels;
         this.placeholders = placeholders;
     }
 
@@ -58,14 +56,6 @@ public class NotificationTemplate {
         this.availableLanguages = availableLanguages;
     }
 
-    public List<String> getAvailableChannels() {
-        return availableChannels;
-    }
-
-    public void setAvailableChannels(List<String> availableChannels) {
-        this.availableChannels = availableChannels;
-    }
-
     public List<String> getPlaceholders() {
         return placeholders;
     }
@@ -73,4 +63,8 @@ public class NotificationTemplate {
     public void setPlaceholders(List<String> placeholders) {
         this.placeholders = placeholders;
     }
+    public NotificationTemplate createTemplate(String username, Order order){
+        return new NotificationTemplate();
+    }
+
 }
