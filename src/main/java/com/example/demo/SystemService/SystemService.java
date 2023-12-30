@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Factory.OrderFactory;
@@ -18,12 +22,16 @@ import com.example.demo.models.Product;
 import com.example.demo.models.ShipmentTemplate;
 
 @Service
+@EnableScheduling
+@Component
 public class SystemService {
 
  NotificationQueueService notificationQueueService = new NotificationQueueService();
   private List<Product> productsList = new ArrayList<>();
   private List<Customer> customersList = new ArrayList<>();
   private OrderFactory orderFactory = new OrderFactory();
+  public ArrayList<String> array = new ArrayList<>();
+
   static double shippingFees = 15;
   public void addCustomer(Customer customer) {
     customersList.add(customer);
@@ -35,7 +43,6 @@ public class SystemService {
   }
 
   public SystemService() {
-    // 1 + 6 + 10 = 17 + 6
     productsList.add(new Product("1", "Apple", "Apple Inc.", "Fruit", 1.0, 100));
     productsList.add(new Product("2", "Banana", "Banana Inc.", "Fruit", 2.0, 100));
     productsList.add(new Product("3", "Orange", "Orange Inc.", "Fruit", 3.0, 100));
@@ -207,7 +214,7 @@ public class SystemService {
       return false;
 
     order.shipOrder(shippingFees);
-    
+
     NotificationTemplate notificationTemplate = new ShipmentTemplate(order);
     notificationQueueService.enqueueNotification(notificationTemplate);
 
@@ -224,4 +231,12 @@ public class SystemService {
     }
     return false;
   }
+    @Scheduled(fixedRate = 5000)
+    public void removeMessagesFromQueue() {
+        NotificationTemplate notificationTemplate = notificationQueueService.dequeue();
+        if(notificationTemplate == null)
+          return;
+        notificationTemplate.getCustomer().getNotifier().send(notificationTemplate);
+        array.add(notificationTemplate.getContent());
+    }
 }

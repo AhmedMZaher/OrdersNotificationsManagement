@@ -23,4 +23,3 @@ public class NotificationQueueService {
         return notificationQueue.poll();
     }
 }
-// notif.getCustomer.getStartegy.send()

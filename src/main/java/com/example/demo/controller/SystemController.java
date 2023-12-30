@@ -70,4 +70,9 @@ public class SystemController {
         loggingController.logout();
         return ResponseEntity.ok("You have logged out successfully!");
     }
+    @GetMapping("/getNotifications")
+    public ResponseEntity<Object> getNotifications() {
+        return ResponseEntity.ok(systemService.array);
+    }
+    
 }

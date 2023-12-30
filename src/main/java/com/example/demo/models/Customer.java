@@ -51,4 +51,7 @@ public class Customer {
       }
     }
   }
+  public INotifier getNotifier(){
+    return iNotifier;
+  }
 }
