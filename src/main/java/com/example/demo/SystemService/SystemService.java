@@ -17,6 +17,8 @@ import com.example.demo.models.Product;
 
 @Service
 public class SystemService {
+
+ NotificationQueueService notificationQueueService = new NotificationQueueService();
   private List<Product> productsList = new ArrayList<>();
   private List<Customer> customersList = new ArrayList<>();
   private OrderFactory orderFactory = new OrderFactory();
@@ -63,10 +65,6 @@ public class SystemService {
   }
 
   public Order createOrder(HashMap<String, Integer> selectedProducts, String orderType, String username) {
-    NotificationTemplate orderPlacementTemplate = new NotificationTemplate("OrderPlacement",
-    "Order Placement Confirmation", "Dear {customer}, your order for {product} is confirmed.", 
-    Arrays.asList("en", "fr"), Arrays.asList("email", "sms"), Arrays.asList("{customer}", "{product}"));
-
     boolean isOrderValid = isOrderValid(selectedProducts);
     if (!isOrderValid) {
       return null;  
@@ -89,6 +87,13 @@ public class SystemService {
     order.calcPrice();
     order.setCustomer(customer);
     customer.placeOrder(order);
+
+
+    NotificationTemplate orderPlacementTemplate = new NotificationTemplate("OrderPlacement",
+    "Order Placement Confirmation", "Dear " + username + ", your order for "+ String.valueOf(order.getOrderID()) +"is confirmed.", 
+    Arrays.asList("en", "fr"), Arrays.asList("email", "sms"), Arrays.asList(username, String.valueOf(order.getOrderID())));
+    
+    notificationQueueService.enqueueNotification(orderPlacementTemplate);
     return order;
   }
 
@@ -108,7 +113,6 @@ public class SystemService {
           break;
       }
     }
-
     return order;
   }
   public Order createCompoundOrder(HashMap<String, Integer> selectedProducts, String orderType, String username, HashMap<String, Integer> simpleOrders){
@@ -202,6 +206,12 @@ public class SystemService {
       return false;
 
     order.shipOrder(shippingFees);
+    NotificationTemplate orderShippmentTemplate = new NotificationTemplate("OrderShipped",
+    "Order Shippment Confirmation", "Dear " + username + ", your order for "+ String.valueOf(order.getOrderID()) +"is Shipped.", 
+    Arrays.asList("en", "fr"), Arrays.asList("email", "sms"), Arrays.asList(username, String.valueOf(order.getOrderID())));
+    
+    notificationQueueService.enqueueNotification(orderShippmentTemplate);
     return true;
+    
   }
 }
