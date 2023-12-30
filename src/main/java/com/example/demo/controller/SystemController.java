@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import javax.management.Notification;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.Customer;
-
-
 import com.example.demo.Repository.CustomersRepo;
 import com.example.demo.Repository.ProductsRepo;
-import com.example.demo.SystemService.SystemService;
+import com.example.demo.Singleton.LoggingController;
+import com.example.demo.SystemService.NotificationsService;
+import com.example.demo.SystemService.OrderService;
+import com.example.demo.SystemService.UserService;
 import com.example.demo.UserData.CustomerData;
 import com.example.demo.UserData.LoginData;
 import com.example.demo.UserData.RequestData;
@@ -25,7 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api")
 public class SystemController {
     @Autowired
-    private SystemService systemService;
+    private OrderService systemService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private NotificationsService notificationsService;
     @Autowired
     private LoggingController loggingController;
     @Autowired
@@ -55,7 +62,7 @@ public class SystemController {
         if(loggingController.isLoggedIn()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please sign out first!");
         }
-        Boolean isUserValid = systemService.isUserValid(loginData.getUsername(), loginData.getPassword());
+        Boolean isUserValid = userService.isUserValid(loginData.getUsername(), loginData.getPassword());
         
         if (isUserValid == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password is not true");
@@ -75,7 +82,7 @@ public class SystemController {
     }
     @GetMapping("/getNotifications")
     public ResponseEntity<Object> getNotifications() {
-        return ResponseEntity.ok(systemService.array);
+        return ResponseEntity.ok(notificationsService.notificationsArray);
     }
     
 }

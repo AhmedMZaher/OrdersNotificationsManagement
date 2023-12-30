@@ -32,4 +32,12 @@ public class ProductsRepo {
     public List<Product> getProductsList(){
         return productsList;
     }
+    public int getProductsQuantity(String serialnumber){
+        for(Product product : productsList){
+            if(product.getSerialNumber().equals(serialnumber)){
+              return product.getRemainingQuantity();
+            }
+          }
+          return -1;
+      }
 }

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.SystemService.SystemService;
+import com.example.demo.Singleton.LoggingController;
+import com.example.demo.SystemService.OrderService;
+import com.example.demo.SystemService.UserService;
 import com.example.demo.models.Order;
 
 import java.util.ArrayList;
@@ -26,15 +28,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/customers")
 public class CustomerController {
   @Autowired
-  private SystemService systemService;
+  private OrderService orderService;
   @Autowired
   private LoggingController loggingController;
+  @Autowired
+  private UserService userService;
+
   @PostMapping("/createSimpleOrder")
   public ResponseEntity<Object> createOrder(@RequestBody HashMap<String, Integer> selectedProducts) {
     if(!loggingController.isLoggedIn()){
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
     }
-    Order order = systemService.createOrder(selectedProducts, "SimpleOrder", loggingController.getUsername());
+    Order order = orderService.createOrder(selectedProducts, "SimpleOrder", loggingController.getUsername());
     if(order == null){
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order was not created");
     }
@@ -50,7 +55,7 @@ public class CustomerController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
     }
 
-    Order order = systemService.createCompoundOrder(selectedProducts, "CompoundOrder", loggingController.getUsername(), simpleOrders);
+    Order order = orderService.createCompoundOrder(selectedProducts, "CompoundOrder", loggingController.getUsername(), simpleOrders);
     if(order == null){
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order was not created");
     }
@@ -62,7 +67,7 @@ public class CustomerController {
       if(!loggingController.isLoggedIn()){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
       }
-      double isOrderChecked = systemService.checkOut(loggingController.getUsername(), orderID);
+      double isOrderChecked = userService.checkOut(loggingController.getUsername(), orderID);
       if(isOrderChecked == -1)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again !");
       return ResponseEntity.ok("Order placed, Thank you for using our service with amount: " + isOrderChecked);
@@ -73,7 +78,7 @@ public class CustomerController {
     if(!loggingController.isLoggedIn()){
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
     }
-    double balance = systemService.getCustomerBalance(loggingController.getUsername());
+    double balance = userService.getCustomerBalance(loggingController.getUsername());
     if(balance == -1)
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not found");
      
@@ -85,7 +90,7 @@ public class CustomerController {
       if(!loggingController.isLoggedIn()){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
       }
-      boolean isOrderCanceled = systemService.cancelOrder(loggingController.getUsername(), orderID);
+      boolean isOrderCanceled = userService.cancelOrder(loggingController.getUsername(), orderID);
       if(isOrderCanceled == false)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again !");
       return ResponseEntity.ok("Order is canceled successfully!");
@@ -95,7 +100,7 @@ public class CustomerController {
       if(!loggingController.isLoggedIn()){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
       }
-      ArrayList<String> orderDetails = systemService.getOrder(loggingController.getUsername(), orderID);
+      ArrayList<String> orderDetails = orderService.getOrder(loggingController.getUsername(), orderID);
       if(orderDetails.isEmpty())
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again! ");
       return ResponseEntity.ok(orderDetails);
@@ -105,7 +110,7 @@ public class CustomerController {
       if(!loggingController.isLoggedIn()){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in");
       }
-      boolean isShipped = systemService.shipOrder(loggingController.getUsername(), orderID);
+      boolean isShipped = orderService.shipOrder(loggingController.getUsername(), orderID);
       if(!isShipped){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error please try again! ");
       }

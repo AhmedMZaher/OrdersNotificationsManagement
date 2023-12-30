@@ -1,14 +1,15 @@
-package com.example.demo.SystemService;
+package com.example.demo.Repository;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import com.example.demo.models.NotificationTemplate;
 
-@Service
+@Repository
 public class NotificationQueueService {
     private Queue<NotificationTemplate> notificationQueue = new LinkedList<>();
 
