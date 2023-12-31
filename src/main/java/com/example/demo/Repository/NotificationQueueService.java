@@ -28,6 +28,8 @@ public class NotificationQueueService {
         return new ArrayList<NotificationTemplate>(notificationQueue);
     }
     public NotificationTemplate dequeue(){
+        if(notificationQueue.isEmpty())
+            return null;
         updateStatistics(notificationQueue.peek());
         return notificationQueue.poll();
     }

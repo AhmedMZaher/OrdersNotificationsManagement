@@ -17,7 +17,7 @@ import com.example.demo.models.NotificationTemplate;
 public class NotificationsService {
   @Autowired
   NotificationQueueService notificationQueueService;
-  public ArrayList<String> notificationsArray = new ArrayList<>();
+  public ArrayList<NotificationTemplate> notificationsArray = new ArrayList<>();
 
   @Scheduled(fixedRate = 5000)
   public void removeMessagesFromQueue() {
@@ -25,7 +25,7 @@ public class NotificationsService {
     if (notificationTemplate == null)
       return;
     notificationTemplate.getCustomer().getNotifier().send(notificationTemplate);
-    notificationsArray.add(notificationTemplate.getContent());
+    notificationsArray.add(notificationTemplate);
   }
   public String getMostNotifiedEmail(){
     return notificationQueueService.getMostNotifiedEmail();
@@ -35,5 +35,21 @@ public class NotificationsService {
   }
   public String getMostNotifiedTemplate(){
     return notificationQueueService.getMostNotifiedTemplate();
+  }
+  public ArrayList<String> getUserNotification(String username) {
+    ArrayList<String> userNotifications = new ArrayList<>();
+    for(NotificationTemplate notification : notificationsArray){
+      if(notification.getCustomer().getLoginData().getUsername().equals(username)){
+        userNotifications.add(notification.getContent());
+      }
+    }
+    return userNotifications;
+  }
+  public ArrayList<String> getAllNotification(){
+    ArrayList<String> userNotifications = new ArrayList<>();
+    for(NotificationTemplate notification : notificationsArray){
+        userNotifications.add(notification.getContent());
+    }
+    return userNotifications;
   }
 }
