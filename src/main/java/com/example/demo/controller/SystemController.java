@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 
 import javax.management.Notification;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.Customer;
+import com.example.demo.models.Product;
 import com.example.demo.Repository.CustomersRepo;
 import com.example.demo.Repository.ProductsRepo;
 import com.example.demo.Singleton.LoggingController;
@@ -36,7 +38,7 @@ public class SystemController {
     @Autowired
     private LoggingController loggingController;
     @Autowired
-    private ProductsRepo productsRepo; 
+    private ProductsRepo productsRepo;
     @Autowired
     private CustomersRepo customersRepo;
 
@@ -59,30 +61,36 @@ public class SystemController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginData loginData) {
-        if(loggingController.isLoggedIn()){
+        if (loggingController.isLoggedIn()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please sign out first!");
         }
         Boolean isUserValid = userService.isUserValid(loginData.getUsername(), loginData.getPassword());
-        
+
         if (isUserValid == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password is not true");
-        }
-        else{
+        } else {
             loggingController.login(loginData.getUsername(), loginData.getPassword());
             return ResponseEntity.ok("Login successful!");
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout() {
-        if(!loggingController.isLoggedIn()){
+        if (!loggingController.isLoggedIn()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please login in!");
         }
         loggingController.logout();
         return ResponseEntity.ok("You have logged out successfully!");
     }
+
     @GetMapping("/getNotifications")
     public ResponseEntity<Object> getNotifications() {
         return ResponseEntity.ok(notificationsService.notificationsArray);
     }
-    
+
+    @GetMapping("/getProductsList")
+    public ResponseEntity<List<Product>> getProductsList() {
+        List<Product> productsList = productsRepo.getProductsList();
+        return ResponseEntity.ok(productsList);
+    }
 }

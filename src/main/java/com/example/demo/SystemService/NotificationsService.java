@@ -15,15 +15,16 @@ import com.example.demo.models.NotificationTemplate;
 @EnableScheduling
 @Component
 public class NotificationsService {
-    @Autowired
-    NotificationQueueService notificationQueueService;
-    public ArrayList<String> notificationsArray = new ArrayList<>();
-    @Scheduled(fixedRate = 5000)
-    public void removeMessagesFromQueue() {
-        NotificationTemplate notificationTemplate = notificationQueueService.dequeue();
-        if(notificationTemplate == null)
-          return;
-        notificationTemplate.getCustomer().getNotifier().send(notificationTemplate);
-        notificationsArray.add(notificationTemplate.getContent());
-    }
+  @Autowired
+  NotificationQueueService notificationQueueService;
+  public ArrayList<String> notificationsArray = new ArrayList<>();
+
+  @Scheduled(fixedRate = 5000)
+  public void removeMessagesFromQueue() {
+    NotificationTemplate notificationTemplate = notificationQueueService.dequeue();
+    if (notificationTemplate == null)
+      return;
+    notificationTemplate.getCustomer().getNotifier().send(notificationTemplate);
+    notificationsArray.add(notificationTemplate.getContent());
+  }
 }
