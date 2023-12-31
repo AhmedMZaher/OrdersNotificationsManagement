@@ -36,7 +36,7 @@ public class OrderService {
   private OrderFactory orderFactory = new OrderFactory();
   
 
-  static double shippingFees = 15;
+  public final double shippingFees = 15;
   
 
   

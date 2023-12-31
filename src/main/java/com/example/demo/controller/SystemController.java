@@ -44,6 +44,9 @@ public class SystemController {
 
     @PostMapping("/createAccount")
     public ResponseEntity<String> signUp(@RequestBody RequestData requestData) {
+        if (loggingController.isLoggedIn()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please sign out first!");
+        }
         CustomerData customerData = requestData.getCustomerData();
         LoginData loginData = requestData.getLoginData();
         try {
@@ -81,11 +84,6 @@ public class SystemController {
         }
         loggingController.logout();
         return ResponseEntity.ok("You have logged out successfully!");
-    }
-
-    @GetMapping("/getNotifications")
-    public ResponseEntity<Object> getNotifications() {
-        return ResponseEntity.ok(notificationsService.notificationsArray);
     }
 
     @GetMapping("/getProductsList")

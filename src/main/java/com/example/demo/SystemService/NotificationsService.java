@@ -27,4 +27,13 @@ public class NotificationsService {
     notificationTemplate.getCustomer().getNotifier().send(notificationTemplate);
     notificationsArray.add(notificationTemplate.getContent());
   }
+  public String getMostNotifiedEmail(){
+    return notificationQueueService.getMostNotifiedEmail();
+  }
+  public String getMostNotifiedPhoneNumber(){
+    return notificationQueueService.getMostNotifiedPhoneNumber();
+  }
+  public String getMostNotifiedTemplate(){
+    return notificationQueueService.getMostNotifiedTemplate();
+  }
 }

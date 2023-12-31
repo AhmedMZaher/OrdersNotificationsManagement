@@ -22,7 +22,7 @@ public class CustomerService {
   @Autowired
   private ProductsRepo productsRepo;
   @Autowired
-  OrderService systemService;
+  OrderService orderService;
 
   public boolean isUserValid(String username, String password) {
     for (Customer customer : customersRepo.getCustomersList()) {
@@ -36,7 +36,7 @@ public class CustomerService {
   }
 
   public double checkOut(String customerUserName, int orderID) {
-    Order order = systemService.findOrderByUsername(customerUserName, orderID);
+    Order order = orderService.findOrderByUsername(customerUserName, orderID);
 
     if (order == null || order.getOrderStatus() != OrderStatus.ONHOLD)
       return -1;
@@ -70,7 +70,7 @@ public class CustomerService {
   }
 
   public boolean cancelOrder(String username, int orderID) {
-    Order order = systemService.findOrderByUsername(username, orderID);
+    Order order = orderService.findOrderByUsername(username, orderID);
     if (order == null || order.getOrderStatus() != OrderStatus.PLACED)
       return false;
     double CustomerBalance = order.getCustomer().getCustomerData().getBalance();
@@ -83,7 +83,7 @@ public class CustomerService {
   }
 
   public boolean cancelShipment(String username, int orderID) {
-    Order order = systemService.findOrderByUsername(username, orderID);
+    Order order = orderService.findOrderByUsername(username, orderID);
     if (order == null || order.getOrderStatus() != OrderStatus.SHIPPED) {
       return false;
     }
@@ -96,11 +96,8 @@ public class CustomerService {
       return false; // Order cannot be canceled if more than 1 minute has passed
     }
     double customerBalance = order.getCustomer().getCustomerData().getBalance();
-    double orderPrice = order.getTotalAmount();
-    order.getCustomer().getCustomerData().setBalance(customerBalance + orderPrice);
-    HashMap<Product, Integer> hashMap = order.getAllProductsQuantity();
+    order.getCustomer().getCustomerData().setBalance(customerBalance + orderService.shippingFees);
     order.setOrderStatus(OrderStatus.PLACED);
-    increaseQuantity(hashMap);
     return true;
   }
 
