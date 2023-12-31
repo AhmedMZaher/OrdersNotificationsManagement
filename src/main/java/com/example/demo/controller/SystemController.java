@@ -19,7 +19,7 @@ import com.example.demo.Repository.ProductsRepo;
 import com.example.demo.Singleton.LoggingController;
 import com.example.demo.SystemService.NotificationsService;
 import com.example.demo.SystemService.OrderService;
-import com.example.demo.SystemService.UserService;
+import com.example.demo.SystemService.CustomerService;
 import com.example.demo.UserData.CustomerData;
 import com.example.demo.UserData.LoginData;
 import com.example.demo.UserData.RequestData;
@@ -32,7 +32,7 @@ public class SystemController {
     @Autowired
     private OrderService systemService;
     @Autowired
-    private UserService userService;
+    private CustomerService customerService;
     @Autowired
     private NotificationsService notificationsService;
     @Autowired
@@ -64,7 +64,7 @@ public class SystemController {
         if (loggingController.isLoggedIn()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please sign out first!");
         }
-        Boolean isUserValid = userService.isUserValid(loginData.getUsername(), loginData.getPassword());
+        Boolean isUserValid = customerService.isUserValid(loginData.getUsername(), loginData.getPassword());
 
         if (isUserValid == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password is not true");

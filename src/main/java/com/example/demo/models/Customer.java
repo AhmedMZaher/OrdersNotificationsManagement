@@ -30,9 +30,11 @@ public class Customer {
   public CustomerData getCustomerData() {
     return customerData;
   }
+
   public LoginData getLoginData() {
     return loginData;
   }
+
   public void setOrders(List<Order> orders) {
     this.orders = orders;
   }
@@ -40,18 +42,20 @@ public class Customer {
   public void placeOrder(Order order) {
     orders.add(order);
   }
-  private void setInotifier(){
+
+  private void setInotifier() {
     iNotifier = new Notifier();
-    for(String strategy : customerData.getPreferredStrategy()){
-      if(strategy.equals("SMS")){
+    for (String strategy : customerData.getPreferredStrategy()) {
+      if (strategy.equals("SMS")) {
         iNotifier = new SMSDecrator(iNotifier);
       }
-      if(strategy.equals("Email")){
+      if (strategy.equals("Email")) {
         iNotifier = new EmailDecrator(iNotifier);
       }
     }
   }
-  public INotifier getNotifier(){
+
+  public INotifier getNotifier() {
     return iNotifier;
   }
 }

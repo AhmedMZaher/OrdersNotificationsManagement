@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,24 +13,25 @@ public abstract class Order {
   private String shippingAddress;
   protected float totalAmount;
   private OrderStatus orderStatus;
+  private LocalDateTime orderPlacementTime;
 
-  public Order(){
+  public Order() {
     totalAmount = 0;
-    
     Random random = new Random();
-    this.orderID =  random.nextInt(1000000); // TODO generate unique random id
+    this.orderID = random.nextInt(1000000); // TODO generate unique random id
     this.orderStatus = OrderStatus.ONHOLD;
     this.products = new HashMap<>();
+    this.orderPlacementTime = LocalDateTime.now();
   }
-  // public Order(int orderID, Customer customer, String shippingAddress, HashMap<Integer, Integer> selectedProducts) {
-  //   //TODO: Order ID is generated automatically
-  //   this.orderID = orderID;
-  //   this.customer = customer;
-  //   this.shippingAddress = shippingAddress;
-  //   this.orderStatus = OrderStatus.PLACED;
-  //   this.products = selectedProducts;
+  // public Order(int orderID, Customer customer, String shippingAddress,
+  // HashMap<Integer, Integer> selectedProducts) {
+  // //TODO: Order ID is generated automatically
+  // this.orderID = orderID;
+  // this.customer = customer;
+  // this.shippingAddress = shippingAddress;
+  // this.orderStatus = OrderStatus.PLACED;
+  // this.products = selectedProducts;
   // }
-  
 
   public int getOrderID() {
     return orderID;
@@ -53,6 +55,10 @@ public abstract class Order {
 
   public OrderStatus getOrderStatus() {
     return orderStatus;
+  }
+
+  public LocalDateTime getOrderPlacementTime() {
+    return orderPlacementTime;
   }
 
   public void setOrderID(int orderID) {
@@ -80,27 +86,26 @@ public abstract class Order {
   }
 
   public abstract void addItem(Product product, int quantity);
-  
+
   public abstract ArrayList<String> showDetails();
 
   public abstract void shipOrder(double shippingFees);
 
-  public void calcPrice(){
+  public void calcPrice() {
     for (Map.Entry<Product, Integer> item : products.entrySet()) {
       double productPrice = item.getKey().getPrice();
       totalAmount += (productPrice * item.getValue());
     }
   }
 
- 
-  public boolean checkout(){
-    
-    if(customer.getCustomerData().getBalance() < totalAmount)
+  public boolean checkout() {
+
+    if (customer.getCustomerData().getBalance() < totalAmount)
       return false;
-    
+
     customer.getCustomerData().setBalance(customer.getCustomerData().getBalance() - totalAmount);
     return true;
   }
+
   public abstract HashMap<Product, Integer> getAllProductsQuantity();
 }
-
